@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>D&D Character Manager</title>
+    <meta name="description"
+        content="Gestiona tu personaje de Dungeons & Dragons. Controla estadísticas, equipo, hechizos y más.">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header class="app-header" id="app-header">
+        <div>
+            <h1 class="app-header__title">⚔️ Grimorio del Aventurero</h1>
+            <p class="app-header__subtitle">Hoja de Personaje D&D 5e</p>
+        </div>
+        <div class="app-header__actions">
+            <button class="btn btn--secondary btn--small" id="btn-export" title="Exportar JSON">📥 Exportar</button>
+            <button class="btn btn--secondary btn--small" id="btn-import" title="Importar JSON">📤 Importar</button>
+            <button class="btn btn--primary btn--small" id="btn-save" title="Guardar cambios">💾 Guardar</button>
+        </div>
+    </header>
+
+    <!-- ===== NAV TABS ===== -->
+    <nav class="nav-tabs" id="nav-tabs">
+        <button class="nav-tab active" data-tab="overview">General</button>
+        <button class="nav-tab" data-tab="stats">Estadísticas</button>
+        <button class="nav-tab" data-tab="combat">Combate</button>
+        <button class="nav-tab" data-tab="skills">Habilidades</button>
+        <button class="nav-tab" data-tab="equipment">Equipo</button>
+        <button class="nav-tab" data-tab="features">Rasgos</button>
+        <button class="nav-tab" data-tab="spells">Hechizos</button>
+        <button class="nav-tab" data-tab="notes">Notas</button>
+    </nav>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="app-container" id="app-container">
+
+        <!-- ========== TAB: OVERVIEW ========== -->
+        <section class="tab-panel active" id="panel-overview">
+            <div class="grid-overview">
+
+                <!-- Character Info -->
+                <div class="card">
+                    <h2 class="card__title">📜 Identidad</h2>
+
+                    <!-- Character Portrait -->
+                    <div class="portrait-container" id="portrait-container">
+                        <img src="docs/imagen_personaje.jpeg" alt="Retrato del Personaje" class="portrait-img"
+                            id="portrait-img">
+                        <div class="portrait-overlay" id="portrait-overlay">
+                            <span>📷 Cambiar</span>
+                        </div>
+                    </div>
+                    <input type="file" id="portrait-upload" accept="image/*" style="display:none;">
+
+                    <div style="display:flex;flex-direction:column;gap:12px;">
+                        <div class="form-group">
+                            <label class="form-label" for="char-name">Nombre</label>
+                            <input class="form-input" type="text" id="char-name" data-path="info.name">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="char-race">Raza</label>
+                            <select class="form-select" id="char-race" data-path="info.race">
+                                <optgroup label="Razas Comunes">
+                                    <option value="Humano">Humano</option>
+                                    <option value="Elfo">Elfo</option>
+                                    <option value="Elfo Alto">Elfo Alto</option>
+                                    <option value="Elfo del Bosque">Elfo del Bosque</option>
+                                    <option value="Elfo Oscuro (Drow)">Elfo Oscuro (Drow)</option>
+                                    <option value="Enano">Enano</option>
+                                    <option value="Enano de las Colinas">Enano de las Colinas</option>
+                                    <option value="Enano de las Montañas">Enano de las Montañas</option>
+                                    <option value="Mediano">Mediano</option>
+                                    <option value="Mediano Piesligeros">Mediano Piesligeros</option>
+                                    <option value="Mediano Fornido">Mediano Fornido</option>
+                                </optgroup>
+                                <optgroup label="Razas Exóticas">
+                                    <option value="Dracónido">Dracónido</option>
+                                    <option value="Gnomo">Gnomo</option>
+                                    <option value="Gnomo del Bosque">Gnomo del Bosque</option>
+                                    <option value="Gnomo de las Rocas">Gnomo de las Rocas</option>
+                                    <option value="Semielfo">Semielfo</option>
+                                    <option value="Semiorco">Semiorco</option>
+                                    <option value="Tiefling">Tiefling</option>
+                                </optgroup>
+                                <optgroup label="Razas Adicionales">
+                                    <option value="Aasimar">Aasimar</option>
+                                    <option value="Firbolg">Firbolg</option>
+                                    <option value="Goliath">Goliath</option>
+                                    <option value="Kenku">Kenku</option>
+                                    <option value="Kobold">Kobold</option>
+                                    <option value="Lizardfolk">Lizardfolk</option>
+                                    <option value="Tabaxi">Tabaxi</option>
+                                    <option value="Tortle">Tortle</option>
+                                    <option value="Tritón">Tritón</option>
+                                    <option value="Yuan-ti">Yuan-ti</option>
+                                    <option value="Genasi">Genasi</option>
+                                    <option value="Aarakocra">Aarakocra</option>
+                                    <option value="Bugbear">Bugbear</option>
+                                    <option value="Goblin">Goblin</option>
+                                    <option value="Hobgoblin">Hobgoblin</option>
+                                    <option value="Orco">Orco</option>
+                                    <option value="Changeling">Changeling</option>
+                                    <option value="Warforged">Warforged</option>
+                                    <option value="Shifter">Shifter</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="char-class">Clase</label>
+                            <select class="form-select" id="char-class" data-path="info.class">
+                                <option value="Bárbaro">⚔️ Bárbaro</option>
+                                <option value="Bardo">🎵 Bardo</option>
+                                <option value="Brujo">🌑 Brujo</option>
+                                <option value="Clérigo">✝️ Clérigo</option>
+                                <option value="Druida">🌿 Druida</option>
+                                <option value="Explorador">🏹 Explorador</option>
+                                <option value="Guerrero">🛡️ Guerrero</option>
+                                <option value="Hechicero">🔮 Hechicero</option>
+                                <option value="Mago">📖 Mago</option>
+                                <option value="Monje">👊 Monje</option>
+                                <option value="Paladín">⚜️ Paladín</option>
+                                <option value="Pícaro">🗡️ Pícaro</option>
+                                <option value="Artífice">⚙️ Artífice</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="char-level">Nivel</label>
+                            <input class="form-input" type="number" id="char-level" min="1" max="20"
+                                data-path="info.level">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="char-alignment">Alineamiento</label>
+                            <select class="form-select" id="char-alignment" data-path="info.alignment">
+                                <option value="Legal Bueno">Legal Bueno</option>
+                                <option value="Neutral Bueno">Neutral Bueno</option>
+                                <option value="Caótico Bueno">Caótico Bueno</option>
+                                <option value="Legal Neutral">Legal Neutral</option>
+                                <option value="Neutral">Neutral</option>
+                                <option value="Caótico Neutral">Caótico Neutral</option>
+                                <option value="Legal Malvado">Legal Malvado</option>
+                                <option value="Neutral Malvado">Neutral Malvado</option>
+                                <option value="Caótico Malvado">Caótico Malvado</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="char-background">Trasfondo</label>
+                            <select class="form-select" id="char-background" data-path="info.background">
+                                <option value="Acólito">Acólito</option>
+                                <option value="Artesano Gremial">Artesano Gremial</option>
+                                <option value="Artista">Artista</option>
+                                <option value="Charlatán">Charlatán</option>
+                                <option value="Criminal">Criminal</option>
+                                <option value="Erudito">Erudito</option>
+                                <option value="Forastero">Forastero</option>
+                                <option value="Héroe del Pueblo">Héroe del Pueblo</option>
+                                <option value="Huérfano">Huérfano</option>
+                                <option value="Marinero">Marinero</option>
+                                <option value="Noble">Noble</option>
+                                <option value="Sabio">Sabio</option>
+                                <option value="Soldado">Soldado</option>
+                                <option value="Ermitaño">Ermitaño</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Central Column: Stats Quick View + HP -->
+                <div style="display:flex;flex-direction:column;gap:20px;">
+                    <!-- Quick Stats -->
+                    <div class="card">
+                        <h2 class="card__title">🎲 Características</h2>
+                        <div class="grid-6" id="quick-stats">
+                            <!-- Generated by JS -->
+                        </div>
+                    </div>
+
+                    <!-- HP Section -->
+                    <div class="card">
+                        <h2 class="card__title">❤️ Puntos de Golpe</h2>
+                        <div class="hp-section">
+                            <div class="hp-bar-container">
+                                <div class="hp-bar" id="hp-bar"></div>
+                                <span class="hp-text" id="hp-text"></span>
+                            </div>
+                            <div class="hp-controls">
+                                <button class="hp-btn hp-btn--damage" id="btn-damage" title="Recibir daño">−</button>
+                                <input class="hp-input" type="number" id="hp-change-value" value="1" min="0">
+                                <button class="hp-btn hp-btn--heal" id="btn-heal" title="Curar">+</button>
+                            </div>
+                            <div style="display:flex;gap:12px;justify-content:center;margin-top:8px;">
+                                <div class="form-group" style="align-items:center;">
+                                    <label class="form-label">PG Actual</label>
+                                    <input class="form-input" type="number" id="hp-current"
+                                        style="width:70px;text-align:center;" min="0">
+                                </div>
+                                <div class="form-group" style="align-items:center;">
+                                    <label class="form-label">PG Máx</label>
+                                    <input class="form-input" type="number" id="hp-max"
+                                        style="width:70px;text-align:center;" min="1">
+                                </div>
+                                <div class="form-group" style="align-items:center;">
+                                    <label class="form-label">Temporales</label>
+                                    <input class="form-input" type="number" id="hp-temp"
+                                        style="width:70px;text-align:center;" min="0">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- XP -->
+                    <div class="card">
+                        <h2 class="card__title">⭐ Experiencia</h2>
+                        <div class="xp-section">
+                            <div class="xp-info">
+                                <span id="xp-current">0 PX</span>
+                                <span id="xp-next">Siguiente nivel: 300 PX</span>
+                            </div>
+                            <div class="xp-bar-container">
+                                <div class="xp-bar" id="xp-bar"></div>
+                            </div>
+                            <div style="margin-top:12px;">
+                                <div class="form-group">
+                                    <label class="form-label" for="xp-input">Puntos de Experiencia</label>
+                                    <input class="form-input" type="number" id="xp-input" min="0"
+                                        data-path="info.experiencePoints">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Personality -->
+                <div style="display:flex;flex-direction:column;gap:20px;">
+                    <div class="card">
+                        <h2 class="card__title">🎭 Personalidad</h2>
+                        <div class="trait-box">
+                            <div class="trait-box__label">Rasgos de Personalidad</div>
+                            <textarea class="trait-box__input" id="trait-personality"
+                                data-path="traits.personalityTraits"></textarea>
+                        </div>
+                        <div class="trait-box">
+                            <div class="trait-box__label">Ideales</div>
+                            <textarea class="trait-box__input" id="trait-ideals" data-path="traits.ideals"></textarea>
+                        </div>
+                        <div class="trait-box">
+                            <div class="trait-box__label">Vínculos</div>
+                            <textarea class="trait-box__input" id="trait-bonds" data-path="traits.bonds"></textarea>
+                        </div>
+                        <div class="trait-box">
+                            <div class="trait-box__label">Defectos</div>
+                            <textarea class="trait-box__input" id="trait-flaws" data-path="traits.flaws"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Inspiration -->
+                    <div class="card" style="text-align:center;">
+                        <div class="inspiration-badge" id="inspiration-badge" title="Clic para alternar inspiración">
+                            <span class="inspiration-badge__star">⭐</span>
+                            <span>Inspiración</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ========== TAB: STATS ========== -->
+        <section class="tab-panel" id="panel-stats">
+            <div class="grid-2">
+                <div class="card">
+                    <h2 class="card__title">📊 Puntuaciones de Característica</h2>
+                    <p style="font-size:0.8rem;color:var(--text-secondary);margin-bottom:16px;">
+                        Modifica las puntuaciones. Los modificadores se calculan automáticamente: (puntuación - 10) / 2,
+                        redondeado hacia abajo.
+                    </p>
+                    <div class="grid-3" id="stat-blocks-edit">
+                        <!-- Generated by JS -->
+                    </div>
+                </div>
+
+                <div style="display:flex;flex-direction:column;gap:20px;">
+                    <!-- Proficiency Bonus -->
+                    <div class="card">
+                        <h2 class="card__title">🏅 Bonificador de Competencia</h2>
+                        <div class="prof-bonus-display">
+                            <div class="prof-bonus-display__value" id="prof-bonus-value">+2</div>
+                            <div class="prof-bonus-display__label">Bonificador</div>
+                        </div>
+                        <p style="font-size:0.78rem;color:var(--text-secondary);margin-top:12px;line-height:1.5;">
+                            Se calcula automáticamente según tu nivel. Nivel 1-4: +2, Nivel 5-8: +3, Nivel 9-12: +4,
+                            Nivel 13-16: +5, Nivel 17-20: +6.
+                        </p>
+                    </div>
+
+                    <!-- Saving Throws -->
+                    <div class="card">
+                        <h2 class="card__title">🛡️ Tiradas de Salvación</h2>
+                        <div class="skill-list" id="saving-throws-list">
+                            <!-- Generated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== TAB: COMBAT ========== -->
+        <section class="tab-panel" id="panel-combat">
+            <div class="grid-3">
+                <!-- Combat Stats -->
+                <div class="card">
+                    <h2 class="card__title">⚔️ Combate</h2>
+                    <div class="grid-3" style="margin-bottom:20px;">
+                        <div class="combat-stat">
+                            <div class="combat-stat__label">Clase de Armadura</div>
+                            <input class="combat-stat__input" type="number" id="combat-ac"
+                                data-path="combat.armorClass">
+                        </div>
+                        <div class="combat-stat">
+                            <div class="combat-stat__label">Iniciativa</div>
+                            <div class="combat-stat__value" id="combat-initiative">+0</div>
+                        </div>
+                        <div class="combat-stat">
+                            <div class="combat-stat__label">Velocidad</div>
+                            <input class="combat-stat__input" type="number" id="combat-speed" data-path="combat.speed">
+                        </div>
+                    </div>
+
+                    <!-- Hit Dice -->
+                    <div class="separator"></div>
+                    <h3
+                        style="font-family:'Cinzel',serif;font-size:0.9rem;color:var(--gold-primary);margin-bottom:12px;">
+                        🎯 Dados de Golpe</h3>
+                    <div style="display:flex;gap:12px;">
+                        <div class="form-group">
+                            <label class="form-label">Tipo</label>
+                            <input class="form-input" type="text" id="hit-dice-type" data-path="hitPoints.hitDice"
+                                style="width:80px;">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Restantes</label>
+                            <input class="form-input" type="number" id="hit-dice-remaining"
+                                data-path="hitPoints.hitDiceRemaining" style="width:80px;" min="0">
+                        </div>
+                    </div>
+
+                    <!-- Death Saves -->
+                    <div class="separator"></div>
+                    <h3
+                        style="font-family:'Cinzel',serif;font-size:0.9rem;color:var(--gold-primary);margin-bottom:8px;">
+                        💀 Tiradas de Muerte</h3>
+                    <div class="death-saves" id="death-saves">
+                        <div class="death-save-group">
+                            <span class="death-save-group__label death-save-group__label--success">Éxitos</span>
+                            <div class="death-save-dots">
+                                <div class="death-save-dot death-save-dot--success" data-index="0"></div>
+                                <div class="death-save-dot death-save-dot--success" data-index="1"></div>
+                                <div class="death-save-dot death-save-dot--success" data-index="2"></div>
+                            </div>
+                        </div>
+                        <div class="death-save-group">
+                            <span class="death-save-group__label death-save-group__label--fail">Fallos</span>
+                            <div class="death-save-dots">
+                                <div class="death-save-dot death-save-dot--fail" data-index="0"></div>
+                                <div class="death-save-dot death-save-dot--fail" data-index="1"></div>
+                                <div class="death-save-dot death-save-dot--fail" data-index="2"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dice Roller -->
+                <div class="card">
+                    <h2 class="card__title">🎲 Lanzar Dados</h2>
+                    <div class="dice-result" id="dice-result">—</div>
+                    <div class="dice-section">
+                        <button class="dice-btn" data-dice="4">d4</button>
+                        <button class="dice-btn" data-dice="6">d6</button>
+                        <button class="dice-btn" data-dice="8">d8</button>
+                        <button class="dice-btn" data-dice="10">d10</button>
+                        <button class="dice-btn" data-dice="12">d12</button>
+                        <button class="dice-btn" data-dice="20">d20</button>
+                        <button class="dice-btn" data-dice="100">d100</button>
+                    </div>
+                    <div class="separator"></div>
+                    <h3
+                        style="font-family:'Cinzel',serif;font-size:0.85rem;color:var(--text-secondary);margin-bottom:8px;">
+                        Historial</h3>
+                    <div class="dice-history" id="dice-history"></div>
+                </div>
+
+                <!-- HP Management (compact) -->
+                <div class="card">
+                    <h2 class="card__title">❤️ Vida Rápida</h2>
+                    <div class="hp-section">
+                        <div class="hp-bar-container">
+                            <div class="hp-bar" id="hp-bar-combat"></div>
+                            <span class="hp-text" id="hp-text-combat"></span>
+                        </div>
+                        <div class="hp-controls">
+                            <button class="hp-btn hp-btn--damage" id="btn-damage-combat" title="Recibir daño">−</button>
+                            <input class="hp-input" type="number" id="hp-change-combat" value="1" min="0">
+                            <button class="hp-btn hp-btn--heal" id="btn-heal-combat" title="Curar">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== TAB: SKILLS ========== -->
+        <section class="tab-panel" id="panel-skills">
+            <div class="grid-2">
+                <div class="card">
+                    <h2 class="card__title">🎯 Habilidades</h2>
+                    <p style="font-size:0.78rem;color:var(--text-secondary);margin-bottom:12px;">
+                        Haz clic en el círculo para marcar/desmarcar competencia. Los bonificadores se actualizan
+                        automáticamente.
+                    </p>
+                    <div class="skill-list" id="skills-list">
+                        <!-- Generated by JS -->
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 class="card__title">👁️ Percepción Pasiva</h2>
+                    <div class="combat-stat" style="margin-bottom:16px;">
+                        <div class="combat-stat__label">Percepción Pasiva</div>
+                        <div class="combat-stat__value" id="passive-perception">10</div>
+                    </div>
+                    <p style="font-size:0.78rem;color:var(--text-secondary);line-height:1.5;">
+                        10 + modificador de Sabiduría + bonificador de competencia (si eres competente en Percepción).
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== TAB: EQUIPMENT ========== -->
+        <section class="tab-panel" id="panel-equipment">
+            <div class="grid-2">
+                <div class="card">
+                    <h2 class="card__title">🎒 Inventario</h2>
+                    <table class="equipment-table" id="equipment-table">
+                        <thead>
+                            <tr>
+                                <th>Objeto</th>
+                                <th>Cant.</th>
+                                <th>Descripción</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="equipment-body">
+                            <!-- Generated by JS -->
+                        </tbody>
+                    </table>
+                    <div class="add-item-form">
+                        <input class="form-input" type="text" id="eq-new-name" placeholder="Nombre del objeto">
+                        <input class="form-input" type="number" id="eq-new-qty" placeholder="Cant." value="1" min="1"
+                            style="width:70px;">
+                        <input class="form-input" type="text" id="eq-new-desc" placeholder="Descripción">
+                        <button class="btn btn--primary btn--small" id="btn-add-equipment">+ Añadir</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 class="card__title">💰 Monedas</h2>
+                    <div class="currency-grid" id="currency-grid">
+                        <div class="currency-item">
+                            <div class="currency-item__icon currency-item__icon--copper">PC</div>
+                            <input class="currency-item__input" type="number" id="currency-copper" min="0"
+                                data-path="currency.copper">
+                            <span class="currency-item__label">Cobre</span>
+                        </div>
+                        <div class="currency-item">
+                            <div class="currency-item__icon currency-item__icon--silver">PP</div>
+                            <input class="currency-item__input" type="number" id="currency-silver" min="0"
+                                data-path="currency.silver">
+                            <span class="currency-item__label">Plata</span>
+                        </div>
+                        <div class="currency-item">
+                            <div class="currency-item__icon currency-item__icon--electrum">PE</div>
+                            <input class="currency-item__input" type="number" id="currency-electrum" min="0"
+                                data-path="currency.electrum">
+                            <span class="currency-item__label">Electro</span>
+                        </div>
+                        <div class="currency-item">
+                            <div class="currency-item__icon currency-item__icon--gold">PO</div>
+                            <input class="currency-item__input" type="number" id="currency-gold" min="0"
+                                data-path="currency.gold">
+                            <span class="currency-item__label">Oro</span>
+                        </div>
+                        <div class="currency-item">
+                            <div class="currency-item__icon currency-item__icon--platinum">PL</div>
+                            <input class="currency-item__input" type="number" id="currency-platinum" min="0"
+                                data-path="currency.platinum">
+                            <span class="currency-item__label">Platino</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== TAB: FEATURES ========== -->
+        <section class="tab-panel" id="panel-features">
+            <div class="card">
+                <h2 class="card__title">📖 Rasgos y Características</h2>
+                <div id="features-list">
+                    <!-- Generated by JS -->
+                </div>
+                <div class="add-item-form">
+                    <input class="form-input" type="text" id="feat-new-name" placeholder="Nombre del rasgo">
+                    <input class="form-input" type="text" id="feat-new-desc" placeholder="Descripción" style="flex:2;">
+                    <button class="btn btn--primary btn--small" id="btn-add-feature">+ Añadir</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== TAB: SPELLS ========== -->
+        <section class="tab-panel" id="panel-spells">
+            <div class="grid-2">
+                <!-- Spell Catalog -->
+                <div class="card">
+                    <h2 class="card__title">📚 Catálogo de Hechizos</h2>
+                    <p style="font-size:0.78rem;color:var(--text-secondary);margin-bottom:12px;">
+                        Busca y añade hechizos del catálogo de D&D 5e a tu personaje.
+                    </p>
+                    <div class="form-group" style="margin-bottom:12px;">
+                        <input class="form-input" type="text" id="spell-search"
+                            placeholder="🔍 Buscar hechizo por nombre...">
+                    </div>
+                    <div class="form-group" style="margin-bottom:12px;">
+                        <label class="form-label">Filtrar por Nivel</label>
+                        <select class="form-select" id="spell-filter-level">
+                            <option value="all">Todos los niveles</option>
+                            <option value="0">Trucos (Nivel 0)</option>
+                            <option value="1">Nivel 1</option>
+                            <option value="2">Nivel 2</option>
+                            <option value="3">Nivel 3</option>
+                            <option value="4">Nivel 4</option>
+                            <option value="5">Nivel 5</option>
+                            <option value="6">Nivel 6</option>
+                            <option value="7">Nivel 7</option>
+                            <option value="8">Nivel 8</option>
+                            <option value="9">Nivel 9</option>
+                        </select>
+                    </div>
+                    <div class="spell-catalog-list" id="spell-catalog-list">
+                        <!-- Generated by JS -->
+                    </div>
+                </div>
+
+                <!-- My Spells -->
+                <div class="card">
+                    <h2 class="card__title">✨ Mis Hechizos</h2>
+                    <p style="font-size:0.8rem;color:var(--text-secondary);margin-bottom:16px;" id="spells-empty-msg">
+                        No tienes hechizos registrados. Selecciona del catálogo o añade uno manualmente.
+                    </p>
+                    <div id="spells-list">
+                        <!-- Generated by JS -->
+                    </div>
+                    <div class="separator"></div>
+                    <h3
+                        style="font-family:'Cinzel',serif;font-size:0.85rem;color:var(--text-secondary);margin-bottom:8px;">
+                        Añadir Manualmente</h3>
+                    <div class="add-item-form">
+                        <input class="form-input" type="text" id="spell-new-name" placeholder="Nombre del hechizo">
+                        <input class="form-input" type="text" id="spell-new-level" placeholder="Nivel"
+                            style="width:80px;">
+                        <input class="form-input" type="text" id="spell-new-school" placeholder="Escuela">
+                        <input class="form-input" type="text" id="spell-new-desc" placeholder="Descripción"
+                            style="flex:2;">
+                        <button class="btn btn--primary btn--small" id="btn-add-spell">+ Añadir</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== TAB: NOTES ========== -->
+        <section class="tab-panel" id="panel-notes">
+            <div class="card">
+                <h2 class="card__title">📝 Notas de Aventura</h2>
+                <textarea class="notes-area" id="notes-area"
+                    placeholder="Escribe tus notas de sesión, misiones, NPCs importantes..."
+                    data-path="notes"></textarea>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ===== TOAST CONTAINER ===== -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- ===== HIDDEN FILE INPUT ===== -->
+    <input type="file" id="file-import" accept=".json" style="display:none;">
+
+    <!-- ===== JAVASCRIPT ===== -->
+    <script>
+        // ========================================================================
+        //  D&D CHARACTER MANAGER - APP LOGIC
+        // ========================================================================
+
+        const STORAGE_KEY = 'dnd_character_data';
+        const STAT_NAMES = {
+            strength: 'Fuerza',
+            dexterity: 'Destreza',
+            constitution: 'Constitución',
+            intelligence: 'Inteligencia',
+            wisdom: 'Sabiduría',
+            charisma: 'Carisma'
+        };
+
+        const STAT_ABBR = {
+            strength: 'FUE',
+            dexterity: 'DES',
+            constitution: 'CON',
+            intelligence: 'INT',
+            wisdom: 'SAB',
+            charisma: 'CAR'
+        };
+
+        const SKILL_NAMES = {
+            acrobatics: 'Acrobacias',
+            animalHandling: 'Trato con Animales',
+            arcana: 'Arcanos',
+            athletics: 'Atletismo',
+            deception: 'Engaño',
+            history: 'Historia',
+            insight: 'Perspicacia',
+            intimidation: 'Intimidación',
+            investigation: 'Investigación',
+            medicine: 'Medicina',
+            nature: 'Naturaleza',
+            perception: 'Percepción',
+            performance: 'Actuación',
+            persuasion: 'Persuasión',
+            religion: 'Religión',
+            sleightOfHand: 'Juego de Manos',
+            stealth: 'Sigilo',
+            survival: 'Supervivencia'
+        };
+
+        // XP thresholds per level
+        const XP_THRESHOLDS = [0, 300, 900, 2700, 6500, 14000, 23000, 34000, 48000, 64000,
+            85000, 100000, 120000, 140000, 165000, 195000, 225000, 265000, 305000, 355000];
+
+        // ===========================
+        //  SPELL CATALOG (D&D 5e)
+        // ===========================
+        const SPELL_CATALOG = [
+            // Trucos (Nivel 0)
+            { name: "Descarga de Fuego", level: 0, school: "Evocación", description: "Lanzas una mota de fuego a una criatura. Tirada de ataque a distancia con hechizo. 1d10 de daño de fuego." },
+            { name: "Rayo de Escarcha", level: 0, school: "Evocación", description: "Un rayo de luz azulada helada. Tirada de ataque a distancia. 1d8 de daño de frío y reduce velocidad en 10 pies." },
+            { name: "Luz", level: 0, school: "Evocación", description: "Tocas un objeto que emite luz brillante en un radio de 20 pies durante 1 hora." },
+            { name: "Mano de Mago", level: 0, school: "Conjuración", description: "Aparece una mano espectral flotante que puede manipular objetos a distancia." },
+            { name: "Mensaje", level: 0, school: "Transmutación", description: "Susurras un mensaje a un objetivo a 120 pies. Solo el objetivo puede oírte y responder." },
+            { name: "Prestidigitación", level: 0, school: "Transmutación", description: "Creas efectos mágicos menores: limpiar, encender, saborizar, crear símbolos, etc." },
+            { name: "Taumaturgia", level: 0, school: "Transmutación", description: "Manifiestas un signo menor de poder sobrenatural: temblores, voz amplificada, etc." },
+            { name: "Descarga Sobrenatural", level: 0, school: "Evocación", description: "Un rayo de energía crepitante. Tirada de ataque a distancia. 1d10 daño de fuerza." },
+            { name: "Hoja de Trueno", level: 0, school: "Evocación", description: "Tu arma emite un estallido de trueno al impactar. Daño de tu arma + 1d6 de trueno." },
+            { name: "Palabra Sagrada", level: 0, school: "Abjuración", description: "Produces una llama sagrada que desciende sobre un objetivo. TS de Destreza o 1d8 radiante." },
+            { name: "Ilusión Menor", level: 0, school: "Ilusión", description: "Creas un sonido o una imagen de un objeto de no más de 5 pies de lado." },
+            { name: "Druidismo", level: 0, school: "Transmutación", description: "Creas un diminuto efecto natural: predecir tiempo, florecer, efecto sensorial o apagar fuego." },
+            { name: "Golpe Certero", level: 0, school: "Adivinación", description: "Obtienes un breve destello del futuro y ganas ventaja en una tirada de ataque." },
+            { name: "Burla Cruel", level: 0, school: "Encantamiento", description: "Desatas un torrente de insultos. TS de Sabiduría o 1d4 daño psíquico y desventaja al siguiente ataque." },
+            // Nivel 1
+            { name: "Armadura de Mago", level: 1, school: "Abjuración", description: "Tocas una criatura y su CA base se convierte en 13 + mod. Destreza. Dura 8 horas." },
+            { name: "Escudo", level: 1, school: "Abjuración", description: "Reacción. +5 a CA hasta tu siguiente turno. Inmune a proyectil mágico." },
+            { name: "Proyectil Mágico", level: 1, school: "Evocación", description: "Tres dardos de fuerza mágica impactan automáticamente. 1d4+1 cada uno." },
+            { name: "Curar Heridas", level: 1, school: "Evocación", description: "Recupera 1d8 + mod. lanzamiento de PG a una criatura que toques." },
+            { name: "Detectar Magia", level: 1, school: "Adivinación", description: "Percibes magia en un radio de 30 pies. Puedes ver un aura alrededor de objetos mágicos. Concentración, 10 min." },
+            { name: "Dormir", level: 1, school: "Encantamiento", description: "5d8 PG de criaturas caen dormidas. Empiezas por las de menor PG actual." },
+            { name: "Rayo Abrasador", level: 1, school: "Evocación", description: "Un rayo de fuego. Tirada de ataque a distancia, 2d6 de daño de fuego. Objetos inflamables se encienden." },
+            { name: "Manos Ardientes", level: 1, school: "Evocación", description: "Cono de 15 pies de fuego. TS Destreza o 3d6 de daño de fuego." },
+            { name: "Bendición", level: 1, school: "Encantamiento", description: "Hasta 3 criaturas suman 1d4 a tiradas de ataque y salvación. Concentración, 1 min." },
+            { name: "Palabra de Curación", level: 1, school: "Evocación", description: "Curas a una criatura visible a 60 pies. Recupera 1d4 + mod. lanzamiento de PG. Acción bonus." },
+            { name: "Ola de Trueno", level: 1, school: "Evocación", description: "Onda de trueno de 15 pies. TS Constitución o 2d8 trueno + empujado 10 pies." },
+            { name: "Rayo Guía", level: 1, school: "Adivinación", description: "Rayo de luz. Siguiente tirada de ataque contra objetivo tiene ventaja. Concentración." },
+            { name: "Santuario", level: 1, school: "Abjuración", description: "Proteges a una criatura. Atacantes deben hacer TS Sabiduría o elegir otro objetivo." },
+            { name: "Caída de Pluma", level: 1, school: "Transmutación", description: "Hasta 5 criaturas caen a 60 pies por ronda y no sufren daño por caída." },
+            { name: "Identificar", level: 1, school: "Adivinación", description: "Aprendes las propiedades mágicas de un objeto o los hechizos que afectan a una criatura." },
+            { name: "Represión Infernal", level: 1, school: "Evocación", description: "Reacción al recibir daño. El atacante recibe 2d10 de daño de fuego (TS Des para mitad)." },
+            { name: "Maleficio", level: 1, school: "Encantamiento", description: "Maldices a un objetivo. +1d6 daño necrótico con tus ataques. Desventaja en una característica a elegir." },
+            // Nivel 2
+            { name: "Bola de Fuego Menor", level: 2, school: "Evocación", description: "Esfera de fuego de 5 pies de radio. TS Destreza o 3d6 daño de fuego." },
+            { name: "Invisibilidad", level: 2, school: "Ilusión", description: "Una criatura se vuelve invisible. Dura hasta 1 hora o hasta que ataque o lance un hechizo." },
+            { name: "Retener Persona", level: 2, school: "Encantamiento", description: "Paralizas a un humanoide. TS Sabiduría cada turno para liberarse. Concentración." },
+            { name: "Nube de Dagas", level: 2, school: "Conjuración", description: "Espacio de 5 pies lleno de dagas giratorias. 4d4 cortante. TS Destreza para mitad." },
+            { name: "Paso Brumoso", level: 2, school: "Conjuración", description: "Acción bonus. Te teletransportas hasta 30 pies a un espacio desocupado que puedas ver." },
+            { name: "Restauración Menor", level: 2, school: "Abjuración", description: "Eliminas una enfermedad o un estado: cegado, ensordecido, paralizado o envenenado." },
+            { name: "Arma Espiritual", level: 2, school: "Evocación", description: "Creas un arma espectral flotante. 1d8 + mod. lanzamiento de daño de fuerza. Acción bonus para atacar." },
+            { name: "Oscuridad", level: 2, school: "Evocación", description: "Oscuridad mágica en esfera de 15 pies de radio. Ni la visión en la oscuridad puede atravesarla." },
+            { name: "Sugestión", level: 2, school: "Encantamiento", description: "Sugieres un curso de acción a una criatura. TS Sabiduría o debe seguir la sugerencia." },
+            { name: "Piel de Corteza", level: 2, school: "Transmutación", description: "CA del objetivo se convierte en 16. Concentración, 1 hora." },
+            // Nivel 3
+            { name: "Bola de Fuego", level: 3, school: "Evocación", description: "Esfera de fuego de 20 pies de radio. TS Destreza o 8d6 de daño de fuego." },
+            { name: "Relámpago", level: 3, school: "Evocación", description: "Línea de 100 pies de rayo. TS Destreza o 8d6 de daño de rayo." },
+            { name: "Contrahechizo", level: 3, school: "Abjuración", description: "Reacción. Intentas interrumpir un hechizo de nivel 3 o inferior. Niveles superiores requieren prueba." },
+            { name: "Disipar Magia", level: 3, school: "Abjuración", description: "Finalizas un hechizo de nivel 3 o inferior sobre un objetivo. Niveles superiores requieren prueba." },
+            { name: "Volar", level: 3, school: "Transmutación", description: "Otorgas velocidad de vuelo de 60 pies. Concentración, 10 minutos." },
+            { name: "Animar Muertos", level: 3, school: "Nigromancia", description: "Creas un sirviente no muerto (zombi o esqueleto) a partir de huesos o un cadáver." },
+            { name: "Espíritus Guardianes", level: 3, school: "Conjuración", description: "Espíritus protegen 15 pies a tu alrededor. 3d8 radiante o necrótico. TS Sabiduría para mitad." },
+            { name: "Revivificar", level: 3, school: "Nigromancia", description: "Tocas una criatura muerta en el último minuto. Vuelve con 1 PG. Componente: diamante 300 po." },
+            { name: "Haste", level: 3, school: "Transmutación", description: "Duplicas velocidad, +2 CA, ventaja en TS Des, y acción extra. Concentración, 1 min." },
+            { name: "Imagen Mayor", level: 3, school: "Ilusión", description: "Creas una ilusión visual, sonora y térmica de hasta 20 pies. Concentración, 10 min." },
+            // Nivel 4
+            { name: "Puerta Dimensional", level: 4, school: "Conjuración", description: "Te teletransportas hasta 500 pies. Puedes llevar a una criatura de tamaño Mediano o menor." },
+            { name: "Invisibilidad Mayor", level: 4, school: "Ilusión", description: "Una criatura es invisible hasta 1 minuto. No se rompe al atacar o lanzar hechizos. Concentración." },
+            { name: "Escudo de Fuego", level: 4, school: "Evocación", description: "Llamas te envuelven. Resistencia a frío o fuego. Atacantes cuerpo a cuerpo reciben 2d8 daño." },
+            { name: "Tormenta de Hielo", level: 4, school: "Evocación", description: "Cilindro de 20 pies radio. 2d8 contundente + 4d6 frío. TS Destreza para mitad. Terreno difícil." },
+            { name: "Guardián de Fe", level: 4, school: "Conjuración", description: "Espectro guardián de tamaño Grande. Cualquier criatura hostil que entre en 10 pies recibe 20 radiante." },
+            { name: "Destierro", level: 4, school: "Abjuración", description: "Desterras a una criatura a otro plano. TS Carisma. Si se concentra 1 min, el efecto es permanente." },
+            { name: "Piel de Piedra", level: 4, school: "Abjuración", description: "Resistencia a daño contundente, cortante y perforante no mágico. Concentración, 1 hora." },
+            // Nivel 5
+            { name: "Cono de Frío", level: 5, school: "Evocación", description: "Cono de 60 pies de aire helado. TS Constitución o 8d8 de daño de frío." },
+            { name: "Muro de Fuerza", level: 5, school: "Evocación", description: "Muro invisible e indestructible. 10 paneles de 10×10 pies. Concentración, 10 min." },
+            { name: "Teleportación", level: 5, school: "Conjuración", description: "Te teletransportas instantáneamente junto con hasta 8 criaturas a un lugar conocido." },
+            { name: "Restauración Mayor", level: 5, school: "Abjuración", description: "Eliminas encantamientos, petrificación, maldiciones o reducciones de característica." },
+            { name: "Resucitar Muertos", level: 5, school: "Nigromancia", description: "Devuelves la vida a una criatura muerta en los últimos 10 días. Componente: diamante 500 po." },
+            { name: "Golpe Flamígero", level: 5, school: "Evocación", description: "Columna de fuego divino de 10 pies radio. 4d6 fuego + 4d6 radiante. TS Des para mitad." },
+            { name: "Plaga de Insectos", level: 5, school: "Conjuración", description: "Enjambre de insectos en esfera de 20 pies. 4d10 perforante. TS Constitución para mitad." },
+            // Nivel 6
+            { name: "Desintegrar", level: 6, school: "Transmutación", description: "Rayo verde. TS Destreza o 10d6+40 de daño de fuerza. Si reduce a 0 PG, el objetivo se desintegra." },
+            { name: "Globo de Invulnerabilidad", level: 6, school: "Abjuración", description: "Esfera de 10 pies. Hechizos de nivel 5 o inferior no pueden atravesarla." },
+            { name: "Curar", level: 6, school: "Evocación", description: "Curas 70 PG y eliminas ceguera, sordera y enfermedades a una criatura que toques." },
+            { name: "Festín de Héroes", level: 6, school: "Conjuración", description: "Banquete para 13 criaturas. +2d10 PG máx, inmune a veneno, ventaja TS Sabiduría. 24 horas." },
+            // Nivel 7
+            { name: "Teletransporte", level: 7, school: "Conjuración", description: "Teletransportas hasta 8 criaturas a cualquier lugar del mismo plano de existencia." },
+            { name: "Espada de Mordenkainen", level: 7, school: "Evocación", description: "Espada de fuerza flotante. 3d10 daño de fuerza con acción bonus. Concentración, 1 min." },
+            { name: "Resurrección", level: 7, school: "Nigromancia", description: "Devuelves la vida a una criatura muerta hasta 100 años. Componente: diamante 1000 po." },
+            { name: "Regenerar", level: 7, school: "Transmutación", description: "Tocas a una criatura. Recupera 4d8+15 PG y regenera miembros perdidos en 2 minutos." },
+            // Nivel 8
+            { name: "Laberinto", level: 8, school: "Conjuración", description: "Desterras a una criatura a un laberinto extradimensional. TS Inteligencia CD 20 para escapar." },
+            { name: "Rayo Solar", level: 8, school: "Evocación", description: "Línea de 60 pies de luz solar. 6d8 radiante + ceguera. TS Constitución para mitad." },
+            { name: "Dominación de Monstruo", level: 8, school: "Encantamiento", description: "Controlas a una criatura. TS Sabiduría. Concentración, 1 hora." },
+            // Nivel 9
+            { name: "Deseo", level: 9, school: "Conjuración", description: "El hechizo más poderoso. Puedes duplicar cualquier hechizo de nivel 8 o inferior, o declarar un deseo." },
+            { name: "Parar el Tiempo", level: 9, school: "Transmutación", description: "Detienes el tiempo brevemente. Obtienes 1d4+1 turnos adicionales donde solo tú actúas." },
+            { name: "Tormenta de Meteoritos", level: 9, school: "Evocación", description: "Cuatro esferas de 40 pies de radio. 20d6 fuego + 20d6 contundente. TS Destreza para mitad." },
+            { name: "Palabra de Poder: Matar", level: 9, school: "Encantamiento", description: "Dices una palabra de poder. Si el objetivo tiene 100 PG o menos, muere instantáneamente." },
+            { name: "Resurrección Verdadera", level: 9, school: "Nigromancia", description: "Devuelves la vida a una criatura muerta hasta 200 años. Componente: diamante 25000 po." },
+        ];
+
+        // ===========================
+        //  DEFAULT CHARACTER DATA
+        // ===========================
+        const DEFAULT_CHARACTER = {
+            info: {
+                name: "Aventurero",
+                race: "Humano",
+                class: "Guerrero",
+                level: 1,
+                alignment: "Neutral Bueno",
+                background: "Soldado",
+                experiencePoints: 0,
+                portrait: ""
+            },
+            stats: { strength: 10, dexterity: 10, constitution: 10, intelligence: 10, wisdom: 10, charisma: 10 },
+            hitPoints: { current: 10, max: 10, temporary: 0, hitDice: "1d10", hitDiceRemaining: 1 },
+            combat: { armorClass: 10, initiative: 0, speed: 30, inspiration: false },
+            proficiencyBonus: 2,
+            savingThrows: {
+                strength: { proficient: true, value: 0 },
+                dexterity: { proficient: false, value: 0 },
+                constitution: { proficient: true, value: 0 },
+                intelligence: { proficient: false, value: 0 },
+                wisdom: { proficient: false, value: 0 },
+                charisma: { proficient: false, value: 0 }
+            },
+            skills: {
+                acrobatics: { stat: "dexterity", proficient: false },
+                animalHandling: { stat: "wisdom", proficient: false },
+                arcana: { stat: "intelligence", proficient: false },
+                athletics: { stat: "strength", proficient: true },
+                deception: { stat: "charisma", proficient: false },
+                history: { stat: "intelligence", proficient: false },
+                insight: { stat: "wisdom", proficient: false },
+                intimidation: { stat: "charisma", proficient: true },
+                investigation: { stat: "intelligence", proficient: false },
+                medicine: { stat: "wisdom", proficient: false },
+                nature: { stat: "intelligence", proficient: false },
+                perception: { stat: "wisdom", proficient: false },
+                performance: { stat: "charisma", proficient: false },
+                persuasion: { stat: "charisma", proficient: false },
+                religion: { stat: "intelligence", proficient: false },
+                sleightOfHand: { stat: "dexterity", proficient: false },
+                stealth: { stat: "dexterity", proficient: false },
+                survival: { stat: "wisdom", proficient: false }
+            },
+            equipment: [
+                { name: "Espada Larga", quantity: 1, description: "1d8 cortante, versátil (1d10)" },
+                { name: "Escudo", quantity: 1, description: "+2 CA" },
+                { name: "Cota de mallas", quantity: 1, description: "CA 16, Desventaja en Sigilo" },
+                { name: "Mochila de explorador", quantity: 1, description: "Incluye equipo básico de aventurero" }
+            ],
+            currency: { copper: 0, silver: 0, electrum: 0, gold: 15, platinum: 0 },
+            traits: {
+                personalityTraits: "Siempre estoy puliendo mi armadura.",
+                ideals: "El bien común. Nuestro trabajo es proteger a los demás.",
+                bonds: "Lucharé por quienes luchan a mi lado.",
+                flaws: "Mi odio contra mis enemigos es ciego y total."
+            },
+            features: [
+                { name: "Estilo de Combate: Defensa", description: "+1 a CA mientras lleves armadura" },
+                { name: "Segundo Aliento", description: "Recupera 1d10 + nivel de PG como acción bonus. 1 uso por descanso corto." }
+            ],
+            spells: [],
+            notes: ""
+        };
+
+        // ===========================
+        //  STATE
+        // ===========================
+        let characterData = {};
+        let diceHistory = [];
+        let deathSaves = { successes: 0, failures: 0 };
+
+        // ===========================
+        //  UTILITY FUNCTIONS
+        // ===========================
+        function deepClone(obj) {
+            return JSON.parse(JSON.stringify(obj));
+        }
+
+        function getNestedValue(obj, path) {
+            return path.split('.').reduce((acc, key) => acc?.[key], obj);
+        }
+
+        function setNestedValue(obj, path, value) {
+            const keys = path.split('.');
+            const last = keys.pop();
+            const target = keys.reduce((acc, key) => acc[key] = acc[key] || {}, obj);
+            target[last] = value;
+        }
+
+        function calcModifier(score) {
+            return Math.floor((score - 10) / 2);
+        }
+
+        function formatModifier(mod) {
+            return mod >= 0 ? `+${mod}` : `${mod}`;
+        }
+
+        function calcProficiencyBonus(level) {
+            if (level <= 4) return 2;
+            if (level <= 8) return 3;
+            if (level <= 12) return 4;
+            if (level <= 16) return 5;
+            return 6;
+        }
+
+        function getXPForLevel(level) {
+            return XP_THRESHOLDS[level - 1] || 0;
+        }
+
+        function getXPForNextLevel(level) {
+            if (level >= 20) return XP_THRESHOLDS[19];
+            return XP_THRESHOLDS[level];
+        }
+
+        // ===========================
+        //  TOAST NOTIFICATION
+        // ===========================
+        function showToast(message, icon = '✅') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerHTML = `<span>${icon}</span> ${message}`;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 3200);
+        }
+
+        // ===========================
+        //  DATA PERSISTENCE
+        // ===========================
+        function loadCharacter() {
+            try {
+                const stored = localStorage.getItem(STORAGE_KEY);
+                if (stored) {
+                    characterData = JSON.parse(stored);
+                    // Merge with defaults for any missing keys
+                    characterData = mergeDefaults(characterData, DEFAULT_CHARACTER);
+                } else {
+                    characterData = deepClone(DEFAULT_CHARACTER);
+                }
+            } catch (e) {
+                console.error('Error loading character:', e);
+                characterData = deepClone(DEFAULT_CHARACTER);
+            }
+        }
+
+        function mergeDefaults(data, defaults) {
+            const result = deepClone(defaults);
+            for (const key in data) {
+                if (data[key] !== null && typeof data[key] === 'object' && !Array.isArray(data[key])) {
+                    result[key] = mergeDefaults(data[key], defaults[key] || {});
+                } else {
+                    result[key] = data[key];
+                }
+            }
+            return result;
+        }
+
+        function saveCharacter() {
+            // Update proficiency bonus
+            const level = characterData.info.level || 1;
+            characterData.proficiencyBonus = calcProficiencyBonus(level);
+
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(characterData));
+            showToast('Personaje guardado correctamente', '💾');
+        }
+
+        function exportCharacter() {
+            const dataStr = JSON.stringify(characterData, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${characterData.info.name || 'personaje'}_dnd.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('Personaje exportado como JSON', '📥');
+        }
+
+        function importCharacter(file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    characterData = mergeDefaults(data, DEFAULT_CHARACTER);
+                    saveCharacter();
+                    renderAll();
+                    showToast('Personaje importado correctamente', '📤');
+                } catch (err) {
+                    showToast('Error al importar el archivo', '❌');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // ===========================
+        //  TAB NAVIGATION
+        // ===========================
+        function initTabs() {
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+                    tab.classList.add('active');
+                    document.getElementById(`panel-${tab.dataset.tab}`).classList.add('active');
+                });
+            });
+        }
+
+        // ===========================
+        //  RENDER FUNCTIONS
+        // ===========================
+        function renderAll() {
+            renderQuickStats();
+            renderStatBlocks();
+            renderSavingThrows();
+            renderSkills();
+            renderHP();
+            renderCombatStats();
+            renderEquipment();
+            renderFeatures();
+            renderSpells();
+            renderSpellCatalog();
+            renderXP();
+            renderFormFields();
+            renderInspiration();
+            renderPassivePerception();
+            renderProfBonus();
+            renderPortrait();
+        }
+
+        // --- Quick Stats (Overview) ---
+        function renderQuickStats() {
+            const container = document.getElementById('quick-stats');
+            container.innerHTML = '';
+            for (const [key, label] of Object.entries(STAT_ABBR)) {
+                const score = characterData.stats[key] || 10;
+                const mod = calcModifier(score);
+                const block = document.createElement('div');
+                block.className = 'stat-block';
+                block.innerHTML = `
+          <div class="stat-block__label">${label}</div>
+          <div class="stat-block__value">${score}</div>
+          <div class="stat-block__modifier">${formatModifier(mod)}</div>
+        `;
+                container.appendChild(block);
+            }
+        }
+
+        // --- Stat Blocks (Edit) ---
+        function renderStatBlocks() {
+            const container = document.getElementById('stat-blocks-edit');
+            container.innerHTML = '';
+            for (const [key, name] of Object.entries(STAT_NAMES)) {
+                const score = characterData.stats[key] || 10;
+                const mod = calcModifier(score);
+                const block = document.createElement('div');
+                block.className = 'stat-block';
+                block.innerHTML = `
+          <div class="stat-block__label">${STAT_ABBR[key]}</div>
+          <input class="stat-block__input" type="number" value="${score}" min="1" max="30" data-stat="${key}">
+          <div class="stat-block__modifier">${formatModifier(mod)}</div>
+          <div style="font-size:0.7rem;color:var(--text-dim);margin-top:4px;">${name}</div>
+        `;
+                const input = block.querySelector('input');
+                input.addEventListener('change', (e) => {
+                    const val = parseInt(e.target.value) || 10;
+                    characterData.stats[key] = Math.max(1, Math.min(30, val));
+                    recalcAll();
+                });
+                container.appendChild(block);
+            }
+        }
+
+        // --- Saving Throws ---
+        function renderSavingThrows() {
+            const container = document.getElementById('saving-throws-list');
+            container.innerHTML = '';
+            const profBonus = characterData.proficiencyBonus || 2;
+
+            for (const [key, name] of Object.entries(STAT_NAMES)) {
+                const st = characterData.savingThrows[key];
+                const mod = calcModifier(characterData.stats[key] || 10);
+                const total = mod + (st.proficient ? profBonus : 0);
+                st.value = total;
+
+                const item = document.createElement('div');
+                item.className = 'skill-item';
+                item.innerHTML = `
+          <div class="skill-item__checkbox ${st.proficient ? 'active' : ''}" data-st="${key}"></div>
+          <span class="skill-item__bonus">${formatModifier(total)}</span>
+          <span class="skill-item__name">${name}</span>
+        `;
+                const checkbox = item.querySelector('.skill-item__checkbox');
+                checkbox.addEventListener('click', () => {
+                    characterData.savingThrows[key].proficient = !characterData.savingThrows[key].proficient;
+                    recalcAll();
+                });
+                container.appendChild(item);
+            }
+        }
+
+        // --- Skills ---
+        function renderSkills() {
+            const container = document.getElementById('skills-list');
+            container.innerHTML = '';
+            const profBonus = characterData.proficiencyBonus || 2;
+
+            // Sort skills alphabetically by Spanish name
+            const sortedSkills = Object.entries(SKILL_NAMES).sort((a, b) => a[1].localeCompare(b[1]));
+
+            for (const [key, name] of sortedSkills) {
+                const skill = characterData.skills[key];
+                const statMod = calcModifier(characterData.stats[skill.stat] || 10);
+                const total = statMod + (skill.proficient ? profBonus : 0);
+
+                const item = document.createElement('div');
+                item.className = 'skill-item';
+                item.innerHTML = `
+          <div class="skill-item__checkbox ${skill.proficient ? 'active' : ''}" data-skill="${key}"></div>
+          <span class="skill-item__bonus">${formatModifier(total)}</span>
+          <span class="skill-item__name">${name}</span>
+          <span class="skill-item__stat-tag">${STAT_ABBR[skill.stat]}</span>
+        `;
+                const checkbox = item.querySelector('.skill-item__checkbox');
+                checkbox.addEventListener('click', () => {
+                    characterData.skills[key].proficient = !characterData.skills[key].proficient;
+                    recalcAll();
+                });
+                container.appendChild(item);
+            }
+        }
+
+        // --- HP ---
+        function renderHP() {
+            const hp = characterData.hitPoints;
+            const percent = Math.max(0, Math.min(100, (hp.current / hp.max) * 100));
+
+            // Overview HP bar
+            const hpBar = document.getElementById('hp-bar');
+            const hpText = document.getElementById('hp-text');
+            if (hpBar) {
+                hpBar.style.width = `${percent}%`;
+
+                // Color based on HP percentage
+                if (percent > 50) {
+                    hpBar.style.background = 'linear-gradient(90deg, #1e8449, #27ae60, #2ecc71)';
+                    hpBar.style.boxShadow = '0 0 15px rgba(39, 174, 96, 0.3)';
+                } else if (percent > 25) {
+                    hpBar.style.background = 'linear-gradient(90deg, #b87333, #d4a843, #f0d68a)';
+                    hpBar.style.boxShadow = '0 0 15px rgba(212, 168, 67, 0.3)';
+                } else {
+                    hpBar.style.background = 'linear-gradient(90deg, #8e2b20, #c0392b, #e74c3c)';
+                    hpBar.style.boxShadow = '0 0 15px rgba(192, 57, 43, 0.3)';
+                }
+            }
+            if (hpText) {
+                hpText.textContent = `${hp.current} / ${hp.max}${hp.temporary > 0 ? ` (+${hp.temporary} temp)` : ''}`;
+            }
+
+            // Combat HP bar (duplicate)
+            const hpBarC = document.getElementById('hp-bar-combat');
+            const hpTextC = document.getElementById('hp-text-combat');
+            if (hpBarC) {
+                hpBarC.style.width = `${percent}%`;
+                hpBarC.style.background = hpBar ? hpBar.style.background : '';
+                hpBarC.style.boxShadow = hpBar ? hpBar.style.boxShadow : '';
+            }
+            if (hpTextC) {
+                hpTextC.textContent = `${hp.current} / ${hp.max}`;
+            }
+
+            // Inputs
+            document.getElementById('hp-current').value = hp.current;
+            document.getElementById('hp-max').value = hp.max;
+            document.getElementById('hp-temp').value = hp.temporary;
+        }
+
+        function changeHP(amount) {
+            const hp = characterData.hitPoints;
+            if (amount < 0) {
+                // Damage: first absorb temp hp
+                let dmg = Math.abs(amount);
+                if (hp.temporary > 0) {
+                    const tempAbsorb = Math.min(hp.temporary, dmg);
+                    hp.temporary -= tempAbsorb;
+                    dmg -= tempAbsorb;
+                }
+                hp.current = Math.max(0, hp.current - dmg);
+            } else {
+                hp.current = Math.min(hp.max, hp.current + amount);
+            }
+            renderHP();
+        }
+
+        // --- Combat Stats ---
+        function renderCombatStats() {
+            const dexMod = calcModifier(characterData.stats.dexterity || 10);
+            characterData.combat.initiative = dexMod;
+            document.getElementById('combat-initiative').textContent = formatModifier(dexMod);
+        }
+
+        // --- Equipment ---
+        function renderEquipment() {
+            const tbody = document.getElementById('equipment-body');
+            tbody.innerHTML = '';
+            characterData.equipment.forEach((item, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+          <td>${item.name}</td>
+          <td>${item.quantity}</td>
+          <td style="color:var(--text-secondary);font-size:0.82rem;">${item.description}</td>
+          <td><button class="equipment-delete" data-index="${index}" title="Eliminar">✕</button></td>
+        `;
+                tr.querySelector('.equipment-delete').addEventListener('click', () => {
+                    characterData.equipment.splice(index, 1);
+                    renderEquipment();
+                });
+                tbody.appendChild(tr);
+            });
+        }
+
+        // --- Features ---
+        function renderFeatures() {
+            const container = document.getElementById('features-list');
+            container.innerHTML = '';
+            characterData.features.forEach((feat, index) => {
+                const div = document.createElement('div');
+                div.className = 'feature-item';
+                div.innerHTML = `
+          <div class="feature-item__header">
+            <span class="feature-item__name">${feat.name}</span>
+            <button class="equipment-delete" data-index="${index}" title="Eliminar">✕</button>
+          </div>
+          <div class="feature-item__desc">${feat.description}</div>
+        `;
+                div.querySelector('.equipment-delete').addEventListener('click', () => {
+                    characterData.features.splice(index, 1);
+                    renderFeatures();
+                });
+                container.appendChild(div);
+            });
+        }
+
+        // --- Spells ---
+        function renderSpells() {
+            const container = document.getElementById('spells-list');
+            const emptyMsg = document.getElementById('spells-empty-msg');
+            container.innerHTML = '';
+
+            if (characterData.spells.length === 0) {
+                emptyMsg.style.display = 'block';
+                return;
+            }
+            emptyMsg.style.display = 'none';
+
+            characterData.spells.forEach((spell, index) => {
+                const div = document.createElement('div');
+                div.className = 'feature-item';
+                div.innerHTML = `
+          <div class="feature-item__header">
+            <span class="feature-item__name">${spell.name}</span>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="font-size:0.7rem;color:var(--purple-light);text-transform:uppercase;letter-spacing:1px;">${spell.school || ''} | Nv. ${spell.level || 0}</span>
+              <button class="equipment-delete" data-index="${index}" title="Eliminar">✕</button>
+            </div>
+          </div>
+          <div class="feature-item__desc">${spell.description || ''}</div>
+        `;
+                div.querySelector('.equipment-delete').addEventListener('click', () => {
+                    characterData.spells.splice(index, 1);
+                    renderSpells();
+                    renderSpellCatalog();
+                });
+                container.appendChild(div);
+            });
+        }
+
+        // --- Spell Catalog ---
+        function renderSpellCatalog() {
+            const container = document.getElementById('spell-catalog-list');
+            if (!container) return;
+            const searchTerm = (document.getElementById('spell-search')?.value || '').toLowerCase();
+            const levelFilter = document.getElementById('spell-filter-level')?.value || 'all';
+            container.innerHTML = '';
+
+            const knownSpellNames = characterData.spells.map(s => s.name);
+
+            let filtered = SPELL_CATALOG.filter(spell => {
+                const matchesSearch = spell.name.toLowerCase().includes(searchTerm) ||
+                    spell.school.toLowerCase().includes(searchTerm) ||
+                    spell.description.toLowerCase().includes(searchTerm);
+                const matchesLevel = levelFilter === 'all' || spell.level === parseInt(levelFilter);
+                return matchesSearch && matchesLevel;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = '<p style="color:var(--text-dim);font-size:0.85rem;text-align:center;padding:20px;">No se encontraron hechizos.</p>';
+                return;
+            }
+
+            filtered.forEach(spell => {
+                const isKnown = knownSpellNames.includes(spell.name);
+                const div = document.createElement('div');
+                div.className = 'spell-catalog-item' + (isKnown ? ' spell-catalog-item--known' : '');
+                div.innerHTML = `
+                    <div class="spell-catalog-item__header">
+                        <div>
+                            <span class="spell-catalog-item__name">${spell.name}</span>
+                            <span class="spell-catalog-item__meta">${spell.school} · ${spell.level === 0 ? 'Truco' : 'Nv. ' + spell.level}</span>
+                        </div>
+                        <button class="btn btn--small ${isKnown ? 'btn--danger' : 'btn--secondary'}" data-spell-name="${spell.name}">
+                            ${isKnown ? '✕ Quitar' : '+ Añadir'}
+                        </button>
+                    </div>
+                    <div class="spell-catalog-item__desc">${spell.description}</div>
+                `;
+                div.querySelector('button').addEventListener('click', () => {
+                    if (isKnown) {
+                        const idx = characterData.spells.findIndex(s => s.name === spell.name);
+                        if (idx !== -1) characterData.spells.splice(idx, 1);
+                        showToast(`"${spell.name}" eliminado`, '🗑️');
+                    } else {
+                        characterData.spells.push({ ...spell });
+                        showToast(`"${spell.name}" añadido`, '✨');
+                    }
+                    renderSpells();
+                    renderSpellCatalog();
+                });
+                container.appendChild(div);
+            });
+        }
+
+        // --- Portrait ---
+        function renderPortrait() {
+            const img = document.getElementById('portrait-img');
+            if (characterData.info.portrait) {
+                img.src = characterData.info.portrait;
+            } else {
+                img.src = 'docs/imagen_personaje.jpeg';
+            }
+        }
+
+        // --- XP ---
+        function renderXP() {
+            const level = characterData.info.level || 1;
+            const xp = characterData.info.experiencePoints || 0;
+            const currentLevelXP = getXPForLevel(level);
+            const nextLevelXP = getXPForNextLevel(level);
+
+            const xpInLevel = xp - currentLevelXP;
+            const xpNeeded = nextLevelXP - currentLevelXP;
+            const percent = level >= 20 ? 100 : Math.min(100, Math.max(0, (xpInLevel / xpNeeded) * 100));
+
+            document.getElementById('xp-current').textContent = `${xp} PX`;
+            document.getElementById('xp-next').textContent = level >= 20 ? 'Nivel máximo' : `Siguiente nivel: ${nextLevelXP} PX`;
+            document.getElementById('xp-bar').style.width = `${percent}%`;
+        }
+
+        // --- Form Fields (data-path binding) ---
+        function renderFormFields() {
+            document.querySelectorAll('[data-path]').forEach(el => {
+                const val = getNestedValue(characterData, el.dataset.path);
+                if (el.tagName === 'SELECT') {
+                    el.value = val || '';
+                } else if (el.tagName === 'TEXTAREA') {
+                    el.value = val || '';
+                } else {
+                    el.value = val ?? '';
+                }
+            });
+        }
+
+        // --- Inspiration ---
+        function renderInspiration() {
+            const badge = document.getElementById('inspiration-badge');
+            if (characterData.combat.inspiration) {
+                badge.classList.add('active');
+            } else {
+                badge.classList.remove('active');
+            }
+        }
+
+        // --- Passive Perception ---
+        function renderPassivePerception() {
+            const wisMod = calcModifier(characterData.stats.wisdom || 10);
+            const profBonus = characterData.proficiencyBonus || 2;
+            const perceptionProf = characterData.skills.perception?.proficient ? profBonus : 0;
+            const passive = 10 + wisMod + perceptionProf;
+            document.getElementById('passive-perception').textContent = passive;
+        }
+
+        // --- Prof Bonus ---
+        function renderProfBonus() {
+            const level = characterData.info.level || 1;
+            const bonus = calcProficiencyBonus(level);
+            characterData.proficiencyBonus = bonus;
+            document.getElementById('prof-bonus-value').textContent = `+${bonus}`;
+        }
+
+        // --- Recalculate All Derived Values ---
+        function recalcAll() {
+            renderProfBonus();
+            renderQuickStats();
+            renderStatBlocks();
+            renderSavingThrows();
+            renderSkills();
+            renderCombatStats();
+            renderPassivePerception();
+            renderXP();
+        }
+
+        // ===========================
+        //  DICE ROLLER
+        // ===========================
+        function rollDice(sides) {
+            const result = Math.floor(Math.random() * sides) + 1;
+            const resultEl = document.getElementById('dice-result');
+            resultEl.textContent = result;
+            resultEl.style.animation = 'none';
+            resultEl.offsetHeight; // trigger reflow
+            resultEl.style.animation = 'diceReveal 0.5s ease';
+
+            // Special colors for d20
+            if (sides === 20) {
+                if (result === 20) {
+                    resultEl.style.color = '#2ecc71';
+                    resultEl.style.textShadow = '0 0 30px rgba(46, 204, 113, 0.5)';
+                } else if (result === 1) {
+                    resultEl.style.color = '#e74c3c';
+                    resultEl.style.textShadow = '0 0 30px rgba(231, 76, 60, 0.5)';
+                } else {
+                    resultEl.style.color = 'var(--gold-light)';
+                    resultEl.style.textShadow = '0 0 20px var(--gold-glow)';
+                }
+            } else {
+                resultEl.style.color = 'var(--gold-light)';
+                resultEl.style.textShadow = '0 0 20px var(--gold-glow)';
+            }
+
+            // Add to history
+            diceHistory.unshift({ sides, result });
+            if (diceHistory.length > 20) diceHistory.pop();
+            renderDiceHistory();
+        }
+
+        function renderDiceHistory() {
+            const container = document.getElementById('dice-history');
+            container.innerHTML = diceHistory.map(d =>
+                `<span class="dice-history__item">d${d.sides}: ${d.result}</span>`
+            ).join('');
+        }
+
+        // ===========================
+        //  DEATH SAVES
+        // ===========================
+        function initDeathSaves() {
+            document.querySelectorAll('.death-save-dot--success').forEach(dot => {
+                dot.addEventListener('click', () => {
+                    const idx = parseInt(dot.dataset.index);
+                    if (idx < deathSaves.successes) {
+                        deathSaves.successes = idx;
+                    } else {
+                        deathSaves.successes = idx + 1;
+                    }
+                    renderDeathSaves();
+                });
+            });
+
+            document.querySelectorAll('.death-save-dot--fail').forEach(dot => {
+                dot.addEventListener('click', () => {
+                    const idx = parseInt(dot.dataset.index);
+                    if (idx < deathSaves.failures) {
+                        deathSaves.failures = idx;
+                    } else {
+                        deathSaves.failures = idx + 1;
+                    }
+                    renderDeathSaves();
+                });
+            });
+        }
+
+        function renderDeathSaves() {
+            document.querySelectorAll('.death-save-dot--success').forEach((dot, i) => {
+                dot.classList.toggle('active', i < deathSaves.successes);
+            });
+            document.querySelectorAll('.death-save-dot--fail').forEach((dot, i) => {
+                dot.classList.toggle('active', i < deathSaves.failures);
+            });
+        }
+
+        // ===========================
+        //  EVENT LISTENERS
+        // ===========================
+        function initEventListeners() {
+            // Save
+            document.getElementById('btn-save').addEventListener('click', saveCharacter);
+
+            // Export
+            document.getElementById('btn-export').addEventListener('click', exportCharacter);
+
+            // Import
+            document.getElementById('btn-import').addEventListener('click', () => {
+                document.getElementById('file-import').click();
+            });
+            document.getElementById('file-import').addEventListener('change', (e) => {
+                if (e.target.files[0]) {
+                    importCharacter(e.target.files[0]);
+                    e.target.value = '';
+                }
+            });
+
+            // HP controls (Overview)
+            document.getElementById('btn-heal').addEventListener('click', () => {
+                const val = parseInt(document.getElementById('hp-change-value').value) || 0;
+                changeHP(val);
+            });
+            document.getElementById('btn-damage').addEventListener('click', () => {
+                const val = parseInt(document.getElementById('hp-change-value').value) || 0;
+                changeHP(-val);
+            });
+
+            // HP controls (Combat)
+            document.getElementById('btn-heal-combat').addEventListener('click', () => {
+                const val = parseInt(document.getElementById('hp-change-combat').value) || 0;
+                changeHP(val);
+            });
+            document.getElementById('btn-damage-combat').addEventListener('click', () => {
+                const val = parseInt(document.getElementById('hp-change-combat').value) || 0;
+                changeHP(-val);
+            });
+
+            // HP direct inputs
+            document.getElementById('hp-current').addEventListener('change', (e) => {
+                characterData.hitPoints.current = Math.max(0, parseInt(e.target.value) || 0);
+                renderHP();
+            });
+            document.getElementById('hp-max').addEventListener('change', (e) => {
+                characterData.hitPoints.max = Math.max(1, parseInt(e.target.value) || 1);
+                if (characterData.hitPoints.current > characterData.hitPoints.max) {
+                    characterData.hitPoints.current = characterData.hitPoints.max;
+                }
+                renderHP();
+            });
+            document.getElementById('hp-temp').addEventListener('change', (e) => {
+                characterData.hitPoints.temporary = Math.max(0, parseInt(e.target.value) || 0);
+                renderHP();
+            });
+
+            // Form field binding (data-path)
+            document.querySelectorAll('[data-path]').forEach(el => {
+                const event = el.tagName === 'SELECT' ? 'change' : 'input';
+                el.addEventListener(event, (e) => {
+                    let val = e.target.value;
+                    if (e.target.type === 'number') val = parseInt(val) || 0;
+                    setNestedValue(characterData, e.target.dataset.path, val);
+
+                    // Recalc if level changed
+                    if (e.target.dataset.path === 'info.level') {
+                        characterData.info.level = Math.max(1, Math.min(20, val));
+                        recalcAll();
+                    }
+                    if (e.target.dataset.path === 'info.experiencePoints') {
+                        renderXP();
+                    }
+                });
+            });
+
+            // Dice roller
+            document.querySelectorAll('.dice-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    rollDice(parseInt(btn.dataset.dice));
+                });
+            });
+
+            // Add Equipment
+            document.getElementById('btn-add-equipment').addEventListener('click', () => {
+                const name = document.getElementById('eq-new-name').value.trim();
+                const qty = parseInt(document.getElementById('eq-new-qty').value) || 1;
+                const desc = document.getElementById('eq-new-desc').value.trim();
+                if (!name) return showToast('Escribe un nombre para el objeto', '⚠️');
+                characterData.equipment.push({ name, quantity: qty, description: desc });
+                document.getElementById('eq-new-name').value = '';
+                document.getElementById('eq-new-qty').value = '1';
+                document.getElementById('eq-new-desc').value = '';
+                renderEquipment();
+                showToast(`${name} añadido al inventario`, '🎒');
+            });
+
+            // Add Feature
+            document.getElementById('btn-add-feature').addEventListener('click', () => {
+                const name = document.getElementById('feat-new-name').value.trim();
+                const desc = document.getElementById('feat-new-desc').value.trim();
+                if (!name) return showToast('Escribe un nombre para el rasgo', '⚠️');
+                characterData.features.push({ name, description: desc });
+                document.getElementById('feat-new-name').value = '';
+                document.getElementById('feat-new-desc').value = '';
+                renderFeatures();
+                showToast(`Rasgo "${name}" añadido`, '📖');
+            });
+
+            // Add Spell
+            document.getElementById('btn-add-spell').addEventListener('click', () => {
+                const name = document.getElementById('spell-new-name').value.trim();
+                const level = document.getElementById('spell-new-level').value.trim();
+                const school = document.getElementById('spell-new-school').value.trim();
+                const desc = document.getElementById('spell-new-desc').value.trim();
+                if (!name) return showToast('Escribe un nombre para el hechizo', '⚠️');
+                characterData.spells.push({ name, level: parseInt(level) || 0, school, description: desc });
+                document.getElementById('spell-new-name').value = '';
+                document.getElementById('spell-new-level').value = '';
+                document.getElementById('spell-new-school').value = '';
+                document.getElementById('spell-new-desc').value = '';
+                renderSpells();
+                showToast(`Hechizo "${name}" añadido`, '✨');
+            });
+
+            // Inspiration toggle
+            document.getElementById('inspiration-badge').addEventListener('click', () => {
+                characterData.combat.inspiration = !characterData.combat.inspiration;
+                renderInspiration();
+                showToast(characterData.combat.inspiration ? '¡Inspiración activada!' : 'Inspiración desactivada', '⭐');
+            });
+
+            // Spell Catalog search & filter
+            document.getElementById('spell-search').addEventListener('input', () => renderSpellCatalog());
+            document.getElementById('spell-filter-level').addEventListener('change', () => renderSpellCatalog());
+
+            // Portrait upload
+            document.getElementById('portrait-container').addEventListener('click', () => {
+                document.getElementById('portrait-upload').click();
+            });
+            document.getElementById('portrait-upload').addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    characterData.info.portrait = ev.target.result;
+                    renderPortrait();
+                    showToast('Retrato actualizado', '📷');
+                };
+                reader.readAsDataURL(file);
+                e.target.value = '';
+            });
+        }
+
+        // ===========================
+        //  AUTO-SAVE (every 30s)
+        // ===========================
+        setInterval(() => {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(characterData));
+        }, 30000);
+
+        // ===========================
+        //  INITIALIZATION
+        // ===========================
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCharacter();
+            initTabs();
+            initEventListeners();
+            initDeathSaves();
+            renderAll();
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,181 @@
+{
+    "info": {
+        "name": "Aventurero",
+        "race": "Humano",
+        "class": "Guerrero",
+        "level": 1,
+        "alignment": "Neutral Bueno",
+        "background": "Soldado",
+        "experiencePoints": 0,
+        "portrait": ""
+    },
+    "stats": {
+        "strength": 10,
+        "dexterity": 10,
+        "constitution": 10,
+        "intelligence": 10,
+        "wisdom": 10,
+        "charisma": 10
+    },
+    "hitPoints": {
+        "current": 10,
+        "max": 10,
+        "temporary": 0,
+        "hitDice": "1d10",
+        "hitDiceRemaining": 1
+    },
+    "combat": {
+        "armorClass": 10,
+        "initiative": 0,
+        "speed": 30,
+        "inspiration": false
+    },
+    "proficiencyBonus": 2,
+    "savingThrows": {
+        "strength": {
+            "proficient": true,
+            "value": 0
+        },
+        "dexterity": {
+            "proficient": false,
+            "value": 0
+        },
+        "constitution": {
+            "proficient": true,
+            "value": 0
+        },
+        "intelligence": {
+            "proficient": false,
+            "value": 0
+        },
+        "wisdom": {
+            "proficient": false,
+            "value": 0
+        },
+        "charisma": {
+            "proficient": false,
+            "value": 0
+        }
+    },
+    "skills": {
+        "acrobatics": {
+            "stat": "dexterity",
+            "proficient": false
+        },
+        "animalHandling": {
+            "stat": "wisdom",
+            "proficient": false
+        },
+        "arcana": {
+            "stat": "intelligence",
+            "proficient": false
+        },
+        "athletics": {
+            "stat": "strength",
+            "proficient": true
+        },
+        "deception": {
+            "stat": "charisma",
+            "proficient": false
+        },
+        "history": {
+            "stat": "intelligence",
+            "proficient": false
+        },
+        "insight": {
+            "stat": "wisdom",
+            "proficient": false
+        },
+        "intimidation": {
+            "stat": "charisma",
+            "proficient": true
+        },
+        "investigation": {
+            "stat": "intelligence",
+            "proficient": false
+        },
+        "medicine": {
+            "stat": "wisdom",
+            "proficient": false
+        },
+        "nature": {
+            "stat": "intelligence",
+            "proficient": false
+        },
+        "perception": {
+            "stat": "wisdom",
+            "proficient": false
+        },
+        "performance": {
+            "stat": "charisma",
+            "proficient": false
+        },
+        "persuasion": {
+            "stat": "charisma",
+            "proficient": false
+        },
+        "religion": {
+            "stat": "intelligence",
+            "proficient": false
+        },
+        "sleightOfHand": {
+            "stat": "dexterity",
+            "proficient": false
+        },
+        "stealth": {
+            "stat": "dexterity",
+            "proficient": false
+        },
+        "survival": {
+            "stat": "wisdom",
+            "proficient": false
+        }
+    },
+    "equipment": [
+        {
+            "name": "Espada Larga",
+            "quantity": 1,
+            "description": "1d8 cortante, versátil (1d10)"
+        },
+        {
+            "name": "Escudo",
+            "quantity": 1,
+            "description": "+2 CA"
+        },
+        {
+            "name": "Cota de mallas",
+            "quantity": 1,
+            "description": "CA 16, Desventaja en Sigilo"
+        },
+        {
+            "name": "Mochila de explorador",
+            "quantity": 1,
+            "description": "Incluye equipo básico de aventurero"
+        }
+    ],
+    "currency": {
+        "copper": 0,
+        "silver": 0,
+        "electrum": 0,
+        "gold": 15,
+        "platinum": 0
+    },
+    "traits": {
+        "personalityTraits": "Siempre estoy puliendo mi armadura.",
+        "ideals": "El bien común. Nuestro trabajo es proteger a los demás.",
+        "bonds": "Lucharé por quienes luchan a mi lado.",
+        "flaws": "Mi odio contra mis enemigos es ciego y total."
+    },
+    "features": [
+        {
+            "name": "Estilo de Combate: Defensa",
+            "description": "+1 a CA mientras lleves armadura"
+        },
+        {
+            "name": "Segundo Aliento",
+            "description": "Recupera 1d10 + nivel de PG como acción bonus. 1 uso por descanso corto."
+        }
+    ],
+    "spells": [],
+    "notes": ""
+}
