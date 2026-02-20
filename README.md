@@ -6,3 +6,5 @@ Esta app sencilloa creada con Vibe coding te permite configurar y guardar la inf
 ### Uso
 
 Solo accede al archivo `index.html` desde tu navegador de preferencia
+
+##### Solo se puede usar en local
